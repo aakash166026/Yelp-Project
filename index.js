@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-let secret = process.env.secret || "mytopsecret";
+let secret = process.env.secret || "%05%Wed<%07%>";
 let store = new MongoDBStore({
     url: db_host,
     secret,
