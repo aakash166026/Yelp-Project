@@ -1,22 +1,23 @@
 <% layout('layout/boilerplate') %>
-
-    <div id="map" style="height: 350px; width: 100%"></div>
+    <link rel="stylesheet" href="/stylesheet/app.css">
+    <div id="map" class="cluster-map"></div>
 
     <h1>All Campgrounds</h1>
     <a class="btn btn-primary" href='/campgrounds/new'>Create new</a>
 
-    <% for(let ele of campgrounds){ %>
-        <div class="card my-1 ">
-            <div class="row d-flex justify-content-around">
+    <% for(let ele of campgrounds){%>
+        <div class="card my-2 ">
+            <div class="row d-flex justify-content-between">
                 <% if(ele.image.length>=1){ %>
-                    <div class="col-md-4 ">
-                        <img src="<%=ele.image[0].url%> " alt="">
+                    <div class="col-md-4 mx-3" style="width: 300px; height: 300px;">
+                        <img id="camp-index-img" class=" d-block " src="<%=ele.image[0].url%> " alt="">
                     </div>
                     <% } %>
-                        <div class=" col-md-7 ">
+                        <div class=" col-md-8 ">
                             <h3 class=" card-title">
                                 <%= ele.title %>
                             </h3>
+
                             <p class="card-description">
                                 <%= ele.description%>
                             </p>
@@ -32,11 +33,11 @@
 
         <% } %>
             <script>
-                let clusterMapToken = '<%- process.env.MAPBOX_TOKEN %>'
+                let clusterMapToken = '<%- process.env.MAPBOX_TOKEN %>';
                 let campground = {
-                    "features": JSON.parse('<%-JSON.stringify(campgrounds) %>')
+                    "features": JSON.parse('<%-JSON.stringify(campgrounds)%>')
                 };
-                console.log(campground);
+                // console.log(campground);
 
             </script>
 

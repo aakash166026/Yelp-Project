@@ -7,7 +7,9 @@ const geocoder = mapbox({ accessToken: process.env.MAPBOX_TOKEN });
 
 
 module.exports.index = (async (req, res) => {
+    //it will find all campgrounds
     let campgrounds = await Campground.find({})
+    // it will render index file which will show all campgrounds
     res.render('campgrounds/index', { campgrounds })
 });
 
@@ -35,6 +37,7 @@ module.exports.showCampground = async (req, res) => {
 
 module.exports.postNewCampground = async (req, res) => {
     // if (!req.body.title || !req.body.image || !req.body.location || !req.body.price || !req.body.description) throw new expressError(408, 'data not found aiiyooo');
+    console.log('hi');
     const geolocationData = await geocoder.forwardGeocode({
         query: req.body.location,
         limit: 1
@@ -45,10 +48,18 @@ module.exports.postNewCampground = async (req, res) => {
     let newData = new Campground(req.body);
     // newData.geometry = geolocationData.body.features[0].geometry;
     let imageDetails = req.files;
-    for (let img of imageDetails) {
+    if (!(imageDetails.length == 0)) {
+        for (let img of imageDetails) {
+            let details = {
+                url: img.path,
+                filename: img.filename
+            }
+            newData.image.push(details);
+        }
+    } else {
         let details = {
-            url: img.path,
-            filename: img.filename
+            url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsUquO2Okptkkp1P4ma-HERSOwwYminn8e1A&s',
+            filename: 'userhasnotuploadedanyimagesodisplayingdefaultimage'
         }
         newData.image.push(details);
     }

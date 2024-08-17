@@ -1,4 +1,5 @@
 mapboxgl.accessToken = clusterMapToken;
+// console.log(campground);
 const map = new mapboxgl.Map({
     container: 'map',
     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
@@ -77,7 +78,13 @@ map.on('load', () => {
             'circle-stroke-width': 1,
             'circle-stroke-color': '#fff'
         }
+
+
+
+
     });
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl());
 
     // inspect a cluster on click
     map.on('click', 'clusters', (e) => {
@@ -103,11 +110,12 @@ map.on('load', () => {
     // the location of the feature, with
     // description HTML from its properties.
     map.on('click', 'unclustered-point', (e) => {
-        console.log(e);
+        console.log(e.features[0]);
         const coordinates = e.features[0].geometry.coordinates.slice();
         const title = campground.features[0].title;
         const location =
             campground.features[0].location;
+
 
         // Ensure that if the map is zoomed out such that
         // multiple copies of the feature are visible, the
@@ -121,7 +129,7 @@ map.on('load', () => {
         new mapboxgl.Popup()
             .setLngLat(coordinates)
             .setHTML(
-                `${title}, ${location}`
+                `${title} : ${location}`
             )
             .addTo(map);
     });
